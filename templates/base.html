@@ -11,6 +11,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     <!-- Bootstrap JS -->
     <script src="{% static 'bootstrap.min.js' %}"></script>
+    <!-- jQuery JS -->
+    <script src="{% static 'jquery-3.7.1.min.js' %}"></script>
     <title>Hello, pybo!</title>
 </head>
 <body>
@@ -20,5 +22,9 @@
 {% endblock %}
 <!-- 기본 템플릿 안에 삽입될 내용 End -->
 
+<!-- JavaScript 영역 Start -->
+{% block script %}
+{% endblock %}
+<!-- JavaScript 영역 End -->
 </body>
 </html>
