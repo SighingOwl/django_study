@@ -3,11 +3,12 @@ from django.db import models
 
 # 질문 모델
 class Question(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author_question')
     subject = models.CharField(max_length=200)
     content = models.TextField()
     create_date = models.DateTimeField()
     modify_date = models.DateTimeField(null=True, blank=True)
+    voter = models.ManyToManyField(User, related_name='voter_question')
 
     def __str__(self):
         return self.subject
@@ -16,11 +17,12 @@ class Question(models.Model):
     # 질문에 대한 답변이 필요하므로 question은 Question 모델에서 외래키로 가져온다.
     # question은 삭제되면 질문도 함께 삭제되도록 삭제 옵션은 CASCADE로 설정
 class Answer(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author_answer')
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     content = models.TextField()
     create_date = models.DateTimeField()
     modify_date = models.DateTimeField(null=True, blank=True)
+    voter = models.ManyToManyField(User, related_name='voter_answer')
 
 # 댓글 모델
     # 작성자, 내용, 작성일시, 수정일시 필드를 포함한다.
