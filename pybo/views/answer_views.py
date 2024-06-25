@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, resolve_url
 from django.utils import timezone
 from ..models import Question, Answer
 from ..forms import AnswerForm
@@ -13,11 +13,11 @@ def answer_create(request, question_id):
         form = AnswerForm(request.POST)
         if form.is_valid():
             answer = form.save(commit=False)
-            answer.auther = request.user
+            answer.author = request.user
             answer.create_date = timezone.now()
             answer.question = question
             answer.save()
-            return redirect('pybo:detail', question_id=question.id)
+            return redirect('{}#answer_{}'.format(resolve_url('pybo:detail', question_id=question.id), answer.id))
     else:
         # request.method가 GET인 경우
         form = AnswerForm()
@@ -43,7 +43,7 @@ def answer_modify(request, answer_id):
             answer.author = request.user
             answer.modify_date = timezone.now()
             answer.save()
-            return redirect('pybo:detail', question_id=answer.question.id)
+            return redirect('{}#answer_{}'.format(resolve_url('pybo:detail', question_id=answer.question.id), answer.id))
     # 요청 메소드가 GET일 때 기존의 답변 데이터를 가져와 폼을 생성
     else:
         form = AnswerForm(instance=answer)
